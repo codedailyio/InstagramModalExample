@@ -73,9 +73,11 @@ export default class App extends React.Component {
     });
   };
   render() {
+    
     const modalStyle = {
       opacity: this.state.visible,
     };
+
     return (
       <View style={styles.container}>
         <View style={styles.main}>
