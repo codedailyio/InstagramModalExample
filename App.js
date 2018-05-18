@@ -1,16 +1,16 @@
 import React from "react";
-import { StyleSheet, Text, View, Image, Animated, PanResponder, Platform } from "react-native";
+import { StyleSheet, Text, View, Image, Animated, PanResponder } from "react-native";
 
 import picture from "./assets/picture.jpg";
 
-const findHover = (layout, { pageX, pageY }, offset) => {
+const findHover = (layout, { pageX, pageY }) => {
   const [selected] =
     Object.entries(layout).find(([key, value]) => {
       return (
         value.pageX <= pageX &&
-        value.pageY - offset <= pageY &&
+        value.pageY <= pageY &&
         value.pageX + value.width >= pageX &&
-        value.pageY + value.height - offset >= pageY
+        value.pageY + value.height >= pageY
       );
     }) || [];
 
@@ -36,15 +36,14 @@ export default class App extends React.Component {
       onStartShouldSetPanResponder: (evt, gestureState) => true,
       onMoveShouldSetPanResponder: (evt, gestureState) => true,
       onPanResponderGrant: (e, gestureState) => {
-        Animated.timing(this.state.visible, {
+        Animated.spring(this.state.visible, {
           toValue: 1,
-          duration: 50,
+          friction: 5,
         }).start();
       },
       onPanResponderMove: (e, gestureState) => {
         const { pageX, pageY } = e.nativeEvent;
-        const offset = Platform.select({ ios: 0, android: 100 });
-        const foundValue = findHover(this.layout, { pageX, pageY }, offset);
+        const foundValue = findHover(this.layout, { pageX, pageY });
 
         this.setState(state => {
           if (state.selected === foundValue) return null;
@@ -76,14 +75,6 @@ export default class App extends React.Component {
   render() {
     const modalStyle = {
       opacity: this.state.visible,
-      transform: [
-        {
-          translateY: this.state.visible.interpolate({
-            inputRange: [0, 1],
-            outputRange: [100, 0],
-          }),
-        },
-      ],
     };
     return (
       <View style={styles.container}>
