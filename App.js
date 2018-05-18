@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     width: "90%",
-    maxHeight: "60%",
+    height: "60%",
   },
   header: {
     backgroundColor: "#FFF",
