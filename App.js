@@ -1,14 +1,5 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  Animated,
-  PanResponder,
-  StatusBar,
-  Platform,
-} from "react-native";
+import { StyleSheet, Text, View, Image, Animated, PanResponder, Platform } from "react-native";
 
 import picture from "./assets/picture.jpg";
 
@@ -16,10 +7,10 @@ const findHover = (layout, { pageX, pageY }, offset) => {
   const [selected] =
     Object.entries(layout).find(([key, value]) => {
       return (
-        (value.pageX) <= pageX &&
-        (value.pageY - offset) <= pageY &&
-        (value.pageX + value.width) >= pageX &&
-        (value.pageY + value.height - offset) >= pageY
+        value.pageX <= pageX &&
+        value.pageY - offset <= pageY &&
+        value.pageX + value.width >= pageX &&
+        value.pageY + value.height - offset >= pageY
       );
     }) || [];
 
@@ -96,7 +87,6 @@ export default class App extends React.Component {
     };
     return (
       <View style={styles.container}>
-        <StatusBar hidden />
         <View style={styles.main}>
           <Image
             source={picture}
