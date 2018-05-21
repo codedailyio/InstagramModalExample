@@ -53,16 +53,17 @@ export default class App extends React.Component {
         });
       },
       onPanResponderRelease: (e, gestureState) => {
-        if (this.state.selected) {
-          alert(`You released on ${this.state.selected}!`);
-        }
-        this.setState({
-          selected: undefined,
-        });
         Animated.timing(this.state.visible, {
           toValue: 0,
           duration: 200,
-        }).start();
+        }).start(() => {
+          if (this.state.selected) {
+            alert(`You released on ${this.state.selected}!`);
+          }
+          this.setState({
+            selected: undefined,
+          });
+        });
       },
     });
   }
@@ -73,7 +74,6 @@ export default class App extends React.Component {
     });
   };
   render() {
-    
     const modalStyle = {
       opacity: this.state.visible,
     };
